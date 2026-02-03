@@ -2,18 +2,27 @@ import streamlit as st
 import time
 import pandas as pd
 
-st.set_page_config(page_title="ProFit Coach AI", page_icon="🏋️")
+st.set_page_config(page_title="ProFit Home Workout", page_icon="💪")
 
 # --- עיצוב ממשק ---
+# שינוי הרקע לבהיר וצבע הטקסט לכהה
 st.markdown("""
     <style>
-    .stButton>button { width: 100%; border-radius: 15px; height: 3.5em; background-color: #00ffcc; color: black; font-weight: bold; }
-    .exercise-box { padding: 15px; border-radius: 10px; background-color: #262730; margin-bottom: 10px; border-right: 5px solid #00ffcc; }
+    /* רקע בהיר לכל האפליקציה וטקסט שחור */
+    .stApp { background-color: #f0f2f6; color: black; }
+    /* כפתורים */
+    div.stButton > button:first-child { width: 100%; border-radius: 15px; height: 3.5em; background-color: #00ffcc; color: black; font-weight: bold; }
+    /* רקע בהיר לתיבות התרגילים עם טקסט שחור */
+    .exercise-box { padding: 15px; border-radius: 10px; background-color: #ffffff; margin-bottom: 10px; border-right: 5px solid #00ffcc; color: black; }
+    /* כותרות ראשיות */
+    h1, h2, h3, h4, h5, h6 { color: black; }
+    /* הטקסט הכללי שאינו כותרת */
+    .css-fg4pbf { color: black; }
     </style>
     """, unsafe_allow_html=True)
 
-st.title("💪 מאמן אישי")
-st.write("תוכנית אימונים ביתית")
+st.title("🏋️ ProFit: תוכנית אימונים ביתית")
+st.write("תוכנית אימונים יומית מפורטת")
 
 # --- בניית התוכנית המקצועית ---
 workout_db = {
@@ -59,6 +68,7 @@ if st.button("🚀 התחל סט!"):
     placeholder = st.empty()
     for i in range(int(t_duration)):
         time.sleep(1)
+        remaining = int(t_duration) - i - 1
         bar.progress((i + 1) / int(t_duration))
         placeholder.metric("זמן נותר", f"{int(t_duration)-i-1} שניות")
     st.audio("https://www.soundjay.com")
@@ -67,9 +77,9 @@ if st.button("🚀 התחל סט!"):
 
 # --- מעקב משקלי עבודה ---
 st.divider()
-st.subheader("📈 יומן אימון (למניעת דריכה במקום)")
+st.subheader("📈 יומן אימון")
 ex_name = st.text_input("שם התרגיל שביצעת:")
 weight_val = st.number_input("משקל שהרמת (קג):", step=0.5)
 
 if st.button("💾 שמור התקדמות"):
-    st.toast(f"מעולה! רשמנו {weight_val} קג ב-{ex_name}. פעם הבאה תנסה לעלות ב-0.5!")
+    st.toast(f"מעולה! רשמנו {weight_val} קג ב-{ex_name}.")
