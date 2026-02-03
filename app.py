@@ -76,3 +76,4 @@ for ex in workout_db[day]:
 # --- טיימר אימון חכם ---
 st.divider()
 st.subheader("⏱️ …
+
