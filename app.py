@@ -25,43 +25,54 @@ st.title("💪 מאמן אישי ותזונה")
 # --- מחשבון חלבון ---
 with st.expander("📊 מחשבון חלבון יומי"):
     weight_kg = st.number_input("הכנס משקל (קג):", min_value=1.0, value=75.0, step=0.5)
-    protein_target = weight_kg * 2.0 # מטרה של 2 גרם לקילו
+    protein_target = weight_kg * 2.0
     st.success(f"מטרת החלבון היומית שלך: *{protein_target:.0f} גרם* (כדי לבנות שריר).")
 
 # --- תוכנית תזונה (ללא בוקר) ---
 with st.expander("🥗 תוכנית תזונה (עד 2000 קל' - ללא בוקר)"):
     st.subheader("ארוחות עשירות בחלבון וקלות להכנה")
     st.markdown("""
-    *   *ארוחת צהריים (כ-800 קלוריות):*
-        *   200 גרם חזה עוף/דג סלמון/טופו
-        *   כוס אורז מלא/קינואה מבושלת
-        *   כוס ירקות מאודים (ברוקולי/שעועית ירוקה)
-    *   *ארוחת ביניים (כ-300 קלוריות):*
-        *   יוגורט יווני (Pro) או קוטג' 5%
-        *   חופן שקדים או פרי
-    *   *ארוחת ערב (כ-700 קלוריות):*
-        *   קופסת טונה במים / 2 ביצים קשות + גבינות
-        *   2 פרוסות לחם מלא
-        *   סלט ירקות גדול עם כף שמן זית
-    *   *סה"כ כ-1800 קלוריות.* ה-200 הנותרים הם לגמישות או השלמת חלבון (שייק חלבון).
+    *   *ארוחת צהריים (כ-800 קלוריות):* 200 גרם חזה עוף/דג, כוס אורז/קינואה, ירקות.
+    *   *ארוחת ביניים (כ-300 קלוריות):* יוגורט יווני (Pro) או קוטג' 5%, פרי.
+    *   *ארוחת ערב (כ-700 קלוריות):* טונה במים/ביצים, 2 פרוסות לחם מלא, סלט ירקות.
+    *   *סה"כ כ-1800 קלוריות.*
     """)
 
 # --- בניית התוכנית המקצועית ---
 workout_db = {
     "יום א' (Push): חזה, כתפיים ויד אחורית": [
-        {"name": "שכיבות סמיכה רחבות", "reps": "4 סטים X 12 חזרות", "desc": "דגש על חזה", "video": "https://www.youtube.com/shorts/B-wzr02OO1g"},
-        {"name": "לחיצת כתפיים (משקולות)", "reps": "3 סטים X 10 חזרות", "desc": "כתפיים רחבות", "video": "https://www.youtube.com/shorts/2D0TyoHv_EY"},
-        {"name": "פשיטת מרפקים מעל הראש", "reps": "3 סטים X 12 חזרות", "desc": "יד אחורית (Triceps)", "video": "https://www.youtube.com/shorts/b_r_LW4HEcM"},
-        {"name": "קפיצה בחבל", "reps": "5 סבבים של דקה", "desc": "פעילות אירובית", "video": "https://www.youtube.com/watch?v=6dZ71O7BzVQ"}
+        {"name": "שכיבות סמיכה רחבות", "reps": "4 סטים X 12 חזרות", "desc": "דגש על חזה", "video": "https://www.youtube.com"},
+        {"name": "לחיצת כתפיים (משקולות)", "reps": "3 סטים X 10 חזרות", "desc": "כתפיים רחבות", "video": "https://www.youtube.com"},
+        {"name": "פשיטת מרפקים מעל הראש", "reps": "3 סטים X 12 חזרות", "desc": "יד אחורית (Triceps)", "video": "https://www.youtube.com"},
+        {"name": "קפיצה בחבל", "reps": "5 סבבים של דקה", "desc": "פעילות אירובית", "video": "https://www.youtube.com"}
     ],
     "יום ב' (Pull): גב ויד קדמית": [
-        {"name": "חתירה עם משקולות", "reps": "4 סטים X 12 חזרות", "desc": "עיבוי הגב", "video": "https://www.youtube.com/shorts/WkFX6_GxAs8"},
-        {"name": "כפיפת מרפקים (Biceps)", "reps": "3 סטים X 12 חזרות", "desc": "ניפוח היד הקדמית", "video": "https://www.youtube.com/watch?v=XGFqO6HMnGQ"},
-        {"name": "פלאנק (Plank)", "reps": "3 סטים X 60 שניות", "desc": "חיזוק הליבה", "video": "https://www.youtube.com/watch?v=JB2oyawG9KI"},
-        {"name": "קפיצה בחבל", "reps": "5 סבבים של דקה", "desc": "פעילות אירובית", "video": "https://www.youtube.com/watch?v=6dZ71O7BzVQ"}
+        {"name": "חתירה עם משקולות", "reps": "4 סטים X 12 חזרות", "desc": "עיבוי הגב", "video": "https://www.youtube.com"},
+        {"name": "כפיפת מרפקים (Biceps)", "reps": "3 סטים X 12 חזרות", "desc": "ניפוח היד הקדמית", "video": "https://www.youtube.com"},
+        {"name": "פלאנק (Plank)", "reps": "3 סטים X 60 שניות", "desc": "חיזוק הליבה", "video": "https://www.youtube.com"},
+        {"name": "קפיצה בחבל", "reps": "5 סבבים של דקה", "desc": "פעילות אירובית", "video": "https://www.youtube.com"}
     ],
     "יום ג' (Legs & Abs): רגליים ובטן": [
-        {"name": "סקוואט עם משקולות", "reps": "4 סטים X 15 חזרות", "desc": "בניית רגליים", "video": "https://www.youtube.com/watch?v=xqvCmoLULNY"},
-        {"name": "מכרעים (Lunges)", "reps": "3 סטים X 12 לכל רגל", "desc": "עיצוב הישבן והירך", "video": "https://www.youtube.com/shorts/zriYMBKtgbI"},
+        {"name": "סקוואט עם משקולות", "reps": "4 סטים X 15 חזרות", "desc": "בניית רגליים", "video": "https://www.youtube.com"},
+        {"name": "מכרעים (Lunges)", "reps": "3 סטים X 12 לכל רגל", "desc": "עיצוב הישבן והירך", "video": "https://www.youtube.com"},
         {"name": "הרמת רגליים בשכיבה", "reps": "4 סטים X 15 חזרות", "desc": "קוביות בבטן", "video": "https://www.youtube.com"},
-{"name": "קפיצה בחבל", "reps": "8 סבבים של דקה", "desc": "פעילות אירובית", "video": "https://www.youtube.com"}
+        {"name": "קפיצה בחבל", "reps": "8 סבבים של דקה", "desc": "פעילות אירובית", "video": "https://www.youtube.com"}
+    ]
+}
+
+# --- בחירת אימון ---
+day = st.selectbox("בחר אימון להיום:", list(workout_db.keys()))
+
+st.subheader("📋 רשימת תרגילים")
+for ex in workout_db[day]:
+    with st.container():
+        st.markdown(f"""<div class="exercise-box">
+            <b>{ex['name']}</b><br>
+            <small>{ex['desc']}</small><br>
+            <code>{ex['reps']}</code><br>
+            <a href="{ex['video']}" target="_blank">📺 צפה בהסבר וידאו קצר</a>
+        </div>""", unsafe_allow_html=True)
+
+# --- טיימר אימון חכם ---
+st.divider()
+st.subheader("⏱️ …
