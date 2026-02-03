@@ -2,10 +2,9 @@ import streamlit as st
 import time
 import pandas as pd
 
-st.set_page_config(page_title="ProFit Home Workout", page_icon="💪")
+st.set_page_config(page_title="ProFit Coach AI", page_icon="🏋️")
 
 # --- עיצוב ממשק ---
-# שינוי הרקע לבהיר וצבע הטקסט לכהה
 st.markdown("""
     <style>
     /* רקע בהיר לכל האפליקציה וטקסט שחור */
@@ -21,65 +20,48 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
-st.title("🏋️ ProFit: תוכנית אימונים ביתית")
-st.write("תוכנית אימונים יומית מפורטת")
+st.title("💪 מאמן אישי ותזונה")
+
+# --- מחשבון חלבון ---
+with st.expander("📊 מחשבון חלבון יומי"):
+    weight_kg = st.number_input("הכנס משקל (קג):", min_value=1.0, value=75.0, step=0.5)
+    protein_target = weight_kg * 2.0 # מטרה של 2 גרם לקילו
+    st.success(f"מטרת החלבון היומית שלך: *{protein_target:.0f} גרם* (כדי לבנות שריר).")
+
+# --- תוכנית תזונה (ללא בוקר) ---
+with st.expander("🥗 תוכנית תזונה (עד 2000 קל' - ללא בוקר)"):
+    st.subheader("ארוחות עשירות בחלבון וקלות להכנה")
+    st.markdown("""
+    *   *ארוחת צהריים (כ-800 קלוריות):*
+        *   200 גרם חזה עוף/דג סלמון/טופו
+        *   כוס אורז מלא/קינואה מבושלת
+        *   כוס ירקות מאודים (ברוקולי/שעועית ירוקה)
+    *   *ארוחת ביניים (כ-300 קלוריות):*
+        *   יוגורט יווני (Pro) או קוטג' 5%
+        *   חופן שקדים או פרי
+    *   *ארוחת ערב (כ-700 קלוריות):*
+        *   קופסת טונה במים / 2 ביצים קשות + גבינות
+        *   2 פרוסות לחם מלא
+        *   סלט ירקות גדול עם כף שמן זית
+    *   *סה"כ כ-1800 קלוריות.* ה-200 הנותרים הם לגמישות או השלמת חלבון (שייק חלבון).
+    """)
 
 # --- בניית התוכנית המקצועית ---
 workout_db = {
     "יום א' (Push): חזה, כתפיים ויד אחורית": [
-        {"name": "שכיבות סמיכה רחבות", "reps": "4 סטים X 12 חזרות", "desc": "דגש על חזה"},
-        {"name": "לחיצת כתפיים (משקולות)", "reps": "3 סטים X 10 חזרות", "desc": "כתפיים רחבות"},
-        {"name": "פשיטת מרפקים מעל הראש", "reps": "3 סטים X 12 חזרות", "desc": "יד אחורית (Triceps)"},
-        {"name": "קפיצה בחבל", "reps": "5 סבבים של דקה", "desc": "פעילות אירובית"}
+        {"name": "שכיבות סמיכה רחבות", "reps": "4 סטים X 12 חזרות", "desc": "דגש על חזה", "video": "https://www.youtube.com/shorts/B-wzr02OO1g"},
+        {"name": "לחיצת כתפיים (משקולות)", "reps": "3 סטים X 10 חזרות", "desc": "כתפיים רחבות", "video": "https://www.youtube.com/shorts/2D0TyoHv_EY"},
+        {"name": "פשיטת מרפקים מעל הראש", "reps": "3 סטים X 12 חזרות", "desc": "יד אחורית (Triceps)", "video": "https://www.youtube.com/shorts/b_r_LW4HEcM"},
+        {"name": "קפיצה בחבל", "reps": "5 סבבים של דקה", "desc": "פעילות אירובית", "video": "https://www.youtube.com/watch?v=6dZ71O7BzVQ"}
     ],
     "יום ב' (Pull): גב ויד קדמית": [
-        {"name": "חתירה עם משקולות", "reps": "4 סטים X 12 חזרות", "desc": "עיבוי הגב"},
-        {"name": "כפיפת מרפקים (Biceps)", "reps": "3 סטים X 12 חזרות", "desc": "ניפוח היד הקדמית"},
-        {"name": "פלאנק (Plank)", "reps": "3 סטים X 60 שניות", "desc": "חיזוק הליבה"},
-        {"name": "קפיצה בחבל", "reps": "5 סבבים של דקה", "desc": "פעילות אירובית"}
+        {"name": "חתירה עם משקולות", "reps": "4 סטים X 12 חזרות", "desc": "עיבוי הגב", "video": "https://www.youtube.com/shorts/WkFX6_GxAs8"},
+        {"name": "כפיפת מרפקים (Biceps)", "reps": "3 סטים X 12 חזרות", "desc": "ניפוח היד הקדמית", "video": "https://www.youtube.com/watch?v=XGFqO6HMnGQ"},
+        {"name": "פלאנק (Plank)", "reps": "3 סטים X 60 שניות", "desc": "חיזוק הליבה", "video": "https://www.youtube.com/watch?v=JB2oyawG9KI"},
+        {"name": "קפיצה בחבל", "reps": "5 סבבים של דקה", "desc": "פעילות אירובית", "video": "https://www.youtube.com/watch?v=6dZ71O7BzVQ"}
     ],
     "יום ג' (Legs & Abs): רגליים ובטן": [
-        {"name": "סקוואט עם משקולות", "reps": "4 סטים X 15 חזרות", "desc": "בניית רגליים"},
-        {"name": "מכרעים (Lunges)", "reps": "3 סטים X 12 לכל רגל", "desc": "עיצוב הישבן והירך"},
-        {"name": "הרמת רגליים בשכיבה", "reps": "4 סטים X 15 חזרות", "desc": "קוביות בבטן"},
-        {"name": "קפיצה בחבל", "reps": "8 סבבים של דקה", "desc": "פעילות אירובית"}
-    ]
-}
-
-# --- בחירת אימון ---
-day = st.selectbox("בחר אימון להיום:", list(workout_db.keys()))
-
-st.subheader("📋 רשימת תרגילים")
-for ex in workout_db[day]:
-    with st.container():
-        st.markdown(f"""<div class="exercise-box">
-            <b>{ex['name']}</b><br>
-            <small>{ex['desc']}</small><br>
-            <code>{ex['reps']}</code>
-        </div>""", unsafe_allow_html=True)
-
-# --- טיימר אימון חכם ---
-st.divider()
-st.subheader("⏱️ טיימר עבודה ומנוחה")
-t_duration = st.number_input("שניות לסט/מנוחה:", value=45)
-
-if st.button("🚀 התחל סט!"):
-    bar = st.progress(0)
-    placeholder = st.empty()
-    for i in range(int(t_duration)):
-        time.sleep(1)
-        remaining = int(t_duration) - i - 1
-        bar.progress((i + 1) / int(t_duration))
-        placeholder.metric("זמן נותר", f"{int(t_duration)-i-1} שניות")
-    st.audio("https://www.soundjay.com")
-    st.success("סיימת סט! רשום משקל ועבור לסט הבא.")
-    st.balloons()
-
-# --- מעקב משקלי עבודה ---
-st.divider()
-st.subheader("📈 יומן אימון")
-ex_name = st.text_input("שם התרגיל שביצעת:")
-weight_val = st.number_input("משקל שהרמת (קג):", step=0.5)
-
-if st.button("💾 שמור התקדמות"):
-    st.toast(f"מעולה! רשמנו {weight_val} קג ב-{ex_name}.")
+        {"name": "סקוואט עם משקולות", "reps": "4 סטים X 15 חזרות", "desc": "בניית רגליים", "video": "https://www.youtube.com/watch?v=xqvCmoLULNY"},
+        {"name": "מכרעים (Lunges)", "reps": "3 סטים X 12 לכל רגל", "desc": "עיצוב הישבן והירך", "video": "https://www.youtube.com/shorts/zriYMBKtgbI"},
+        {"name": "הרמת רגליים בשכיבה", "reps": "4 סטים X 15 חזרות", "desc": "קוביות בבטן", "video": "https://www.youtube.com"},
+        {"name": "קפיצה בחבל", "reps": "8 סבבים של דקה", "desc": "פעילות אירובית", "video": "
