@@ -64,4 +64,4 @@ workout_db = {
         {"name": "סקוואט עם משקולות", "reps": "4 סטים X 15 חזרות", "desc": "בניית רגליים", "video": "https://www.youtube.com/watch?v=xqvCmoLULNY"},
         {"name": "מכרעים (Lunges)", "reps": "3 סטים X 12 לכל רגל", "desc": "עיצוב הישבן והירך", "video": "https://www.youtube.com/shorts/zriYMBKtgbI"},
         {"name": "הרמת רגליים בשכיבה", "reps": "4 סטים X 15 חזרות", "desc": "קוביות בבטן", "video": "https://www.youtube.com"},
-        {"name": "קפיצה בחבל", "reps": "8 סבבים של דקה", "desc": "פעילות אירובית", "video": "
+{"name": "קפיצה בחבל", "reps": "8 סבבים של דקה", "desc": "פעילות אירובית", "video": "https://www.youtube.com"}
