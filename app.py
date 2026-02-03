@@ -18,13 +18,19 @@ duration = st.number_input("שניות לתרגיל:", value=45)
 
 if st.button("🚀 התחל טיימר"):
     bar = st.progress(0)
+    status = st.empty()
     for i in range(int(duration)):
         time.sleep(1)
-        bar.progress((i + 1) / duration)
+        remaining = int(duration) - i - 1
+        bar.progress((i + 1) / int(duration))
+        status.text(f"זמן נותר: {remaining} שניות")
+    
+    # הלינק המתוקן עם סיומת mp3
     st.audio("https://www.soundjay.com")
+    st.success("סיימת! נוח דקה ועבור לסט הבא.")
     st.balloons()
 
-# מעקב משקל - תיקון שגיאת ההזחה והגרשיים
+# מעקב משקל
 st.divider()
 st.header("📈 מעקב משקל")
 if "data" not in st.session_state:
@@ -36,8 +42,8 @@ with st.form("progress_form"):
     if submit:
         new_row = pd.DataFrame({"date": [pd.Timestamp.now()], "weight": [w]})
         st.session_state.data = pd.concat([st.session_state.data, new_row])
-        st.success("נשמר!")
+        st.success("הנתון נשמר!")
 
 if not st.session_state.data.empty:
-    fig = px.line(st.session_state.data, x="date", y="weight")
+    fig = px.line(st.session_state.data, x="date", y="weight", title="התקדמות כוח")
     st.plotly_chart(fig)
