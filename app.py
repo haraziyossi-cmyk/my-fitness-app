@@ -68,7 +68,7 @@ if "data" not in st.session_state:
     st.session_state.data = pd.DataFrame(columns=["תאריך", "משקל"])
 
 with st.form("progress_form"):
-    w = st.number_input("משקל שהרמת היום (ק"ג):", step=0.5)
+  w = st.number_input('משקל שהרמת היום (ק"ג):', step=0.5)
     submit = st.form_submit_button("שמור התקדמות")
     if submit:
         new_data = pd.DataFrame({"תאריך": [pd.Timestamp.now()], "משקל": [w]})
@@ -77,4 +77,5 @@ with st.form("progress_form"):
 if not st.session_state.data.empty:
     fig = px.line(st.session_state.data, x="תאריך", y="משקל", title="גרף התקדמות כוח")
     fig.update_traces(line_color='#00ffcc')
+
     st.plotly_chart(fig, use_container_width=True)
