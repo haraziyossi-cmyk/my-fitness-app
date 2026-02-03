@@ -1,49 +1,75 @@
 import streamlit as st
 import time
 import pandas as pd
-import plotly.express as px
 
-st.set_page_config(page_title="ProFit AI", page_icon="🔥")
+st.set_page_config(page_title="ProFit Coach AI", page_icon="🏋️")
 
-st.title("🔥 ProFit: Muscle & Abs")
+# --- עיצוב ממשק ---
+st.markdown("""
+    <style>
+    .stButton>button { width: 100%; border-radius: 15px; height: 3.5em; background-color: #00ffcc; color: black; font-weight: bold; }
+    .exercise-box { padding: 15px; border-radius: 10px; background-color: #262730; margin-bottom: 10px; border-right: 5px solid #00ffcc; }
+    </style>
+    """, unsafe_allow_html=True)
 
-# תפריט
-with st.expander("🥗 תפריט 2000 קלוריות"):
-    st.write("חלבון: עוף, טונה, ביצים | פחמימה: אורז, בטטה")
+st.title("💪 מאמן אישי")
+st.write("תוכנית אימונים ביתית")
 
-# טיימר
-st.header("🏋️ אימון מודרך")
-mode = st.selectbox("בחר אימון:", ["ניפוח שריר", "חיטוב וקוביות"])
-duration = st.number_input("שניות לתרגיל:", value=45)
+# --- בניית התוכנית המקצועית ---
+workout_db = {
+    "יום א' (Push): חזה, כתפיים ויד אחורית": [
+        {"name": "שכיבות סמיכה רחבות", "reps": "4 סטים X 12 חזרות", "desc": "דגש על חזה"},
+        {"name": "לחיצת כתפיים (משקולות)", "reps": "3 סטים X 10 חזרות", "desc": "כתפיים רחבות"},
+        {"name": "פשיטת מרפקים מעל הראש", "reps": "3 סטים X 12 חזרות", "desc": "יד אחורית (Triceps)"},
+        {"name": "קפיצה בחבל", "reps": "5 סבבים של דקה", "desc": "פעילות אירובית"}
+    ],
+    "יום ב' (Pull): גב ויד קדמית": [
+        {"name": "חתירה עם משקולות", "reps": "4 סטים X 12 חזרות", "desc": "עיבוי הגב"},
+        {"name": "כפיפת מרפקים (Biceps)", "reps": "3 סטים X 12 חזרות", "desc": "ניפוח היד הקדמית"},
+        {"name": "פלאנק (Plank)", "reps": "3 סטים X 60 שניות", "desc": "חיזוק הליבה"},
+        {"name": "קפיצה בחבל", "reps": "5 סבבים של דקה", "desc": "פעילות אירובית"}
+    ],
+    "יום ג' (Legs & Abs): רגליים ובטן": [
+        {"name": "סקוואט עם משקולות", "reps": "4 סטים X 15 חזרות", "desc": "בניית רגליים"},
+        {"name": "מכרעים (Lunges)", "reps": "3 סטים X 12 לכל רגל", "desc": "עיצוב הישבן והירך"},
+        {"name": "הרמת רגליים בשכיבה", "reps": "4 סטים X 15 חזרות", "desc": "קוביות בבטן"},
+        {"name": "קפיצה בחבל", "reps": "8 סבבים של דקה", "desc": "פעילות אירובית"}
+    ]
+}
 
-if st.button("🚀 התחל טיימר"):
+# --- בחירת אימון ---
+day = st.selectbox("בחר אימון להיום:", list(workout_db.keys()))
+
+st.subheader("📋 רשימת תרגילים")
+for ex in workout_db[day]:
+    with st.container():
+        st.markdown(f"""<div class="exercise-box">
+            <b>{ex['name']}</b><br>
+            <small>{ex['desc']}</small><br>
+            <code>{ex['reps']}</code>
+        </div>""", unsafe_allow_html=True)
+
+# --- טיימר אימון חכם ---
+st.divider()
+st.subheader("⏱️ טיימר עבודה ומנוחה")
+t_duration = st.number_input("שניות לסט/מנוחה:", value=45)
+
+if st.button("🚀 התחל סט!"):
     bar = st.progress(0)
-    status = st.empty()
-    for i in range(int(duration)):
+    placeholder = st.empty()
+    for i in range(int(t_duration)):
         time.sleep(1)
-        remaining = int(duration) - i - 1
-        bar.progress((i + 1) / int(duration))
-        status.text(f"זמן נותר: {remaining} שניות")
-    
-    # הלינק המתוקן עם סיומת mp3
+        bar.progress((i + 1) / int(t_duration))
+        placeholder.metric("זמן נותר", f"{int(t_duration)-i-1} שניות")
     st.audio("https://www.soundjay.com")
-    st.success("סיימת! נוח דקה ועבור לסט הבא.")
+    st.success("סיימת סט! רשום משקל ועבור לסט הבא.")
     st.balloons()
 
-# מעקב משקל
+# --- מעקב משקלי עבודה ---
 st.divider()
-st.header("📈 מעקב משקל")
-if "data" not in st.session_state:
-    st.session_state.data = pd.DataFrame(columns=["date", "weight"])
+st.subheader("📈 יומן אימון (למניעת דריכה במקום)")
+ex_name = st.text_input("שם התרגיל שביצעת:")
+weight_val = st.number_input("משקל שהרמת (קג):", step=0.5)
 
-with st.form("progress_form"):
-    w = st.number_input("משקל שהרמת היום (קג):", step=0.5)
-    submit = st.form_submit_button("שמור התקדמות")
-    if submit:
-        new_row = pd.DataFrame({"date": [pd.Timestamp.now()], "weight": [w]})
-        st.session_state.data = pd.concat([st.session_state.data, new_row])
-        st.success("הנתון נשמר!")
-
-if not st.session_state.data.empty:
-    fig = px.line(st.session_state.data, x="date", y="weight", title="התקדמות כוח")
-    st.plotly_chart(fig)
+if st.button("💾 שמור התקדמות"):
+    st.toast(f"מעולה! רשמנו {weight_val} קג ב-{ex_name}. פעם הבאה תנסה לעלות ב-0.5!")
