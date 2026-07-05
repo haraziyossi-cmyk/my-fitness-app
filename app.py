@@ -1,29 +1,27 @@
 import streamlit as st
 import pandas as pd
+import os
 
-st.set_page_config(page_title="Finan-Tech Comparison", layout="wide")
-st.title("📊 מערכת השוואת מוצרים פיננסיים")
+st.set_page_config(page_title="Finan-Tech XML", layout="wide")
+st.title("📊 מערכת השוואת מוצרים (XML)")
 
-# יצירת לשוניות
 tab1, tab2, tab3 = st.tabs(["פנסיה", "גמל", "ביטוח"])
 
-def load_data(file_name):
-    if file_name.endswith('.csv'):
-        return pd.read_csv(file_name, encoding='cp1255')
+def show_xml_tab(file_name, tab_name):
+    if os.path.exists(file_name):
+        try:
+            # קריאת קובץ XML ישירות לטבלה
+            df = pd.read_xml(file_name)
+            st.write(f"### נתוני {tab_name}")
+            st.dataframe(df, use_container_width=True)
+        except Exception as e:
+            st.error(f"שגיאה בקריאת ה-XML ב-{file_name}: {e}")
     else:
-        return pd.read_excel(file_name)
-
-def show_tab(file_name, tab_name):
-    try:
-        df = load_data(file_name)
-        st.write(f"### נתוני {tab_name}")
-        st.dataframe(df, use_container_width=True)
-    except Exception as e:
-        st.error(f"שגיאה בטעינת {tab_name}: {e}. וודא ששם הקובץ ב-GitHub תואם לקוד.")
+        st.error(f"הקובץ {file_name} לא נמצא!")
 
 with tab1:
-    show_tab("pension.xlsx", "פנסיה")
+    show_xml_tab("pension.xml", "פנסיה")
 with tab2:
-    show_tab("gemel.xlsx", "גמל")
+    show_xml_tab("gemel.xml", "גמל")
 with tab3:
-    show_tab("bituach.xlsx", "ביטוח")
+    show_xml_tab("bituach.xml", "ביטוח")
